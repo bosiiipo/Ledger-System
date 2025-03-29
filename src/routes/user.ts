@@ -8,7 +8,6 @@ const authController = new AuthController();
 
 router.get('/:userId', authController.authorizeToken, userController.getUserById); 
 
-
 export default router;
 
 

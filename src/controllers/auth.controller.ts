@@ -1,7 +1,10 @@
 import {NextFunction, Request, Response} from 'express';
-import {sendSuccessResponse, StatusCode} from '../responses';
+import {sendFailureResponse, sendSuccessResponse, StatusCode} from '../responses';
 import { jwtController } from '../services/jwt';
 import * as AuthService from '../services/auth'
+import {JsonWebTokenError, TokenExpiredError} from 'jsonwebtoken';
+import { AuthorizationError } from '../responses/errors';
+
 
 export class AuthController {
   async signIn (req: Request, res: Response) {
@@ -36,6 +39,39 @@ export class AuthController {
       'User created successfully',
       response
     );
+  }
+
+  async authorizeToken(req: Request, res: Response, next: NextFunction) {
+    try {
+      const authHeader = req.headers.authorization;
+  
+      if (!authHeader)
+        return sendFailureResponse(
+          res,
+          StatusCode.UNAUTHORIZED,
+          'Authorization header not found'
+        );
+  
+      const [bearer, token] = authHeader.split(' ');
+      if (!(bearer?.toLowerCase() === 'bearer' && token))
+        return sendFailureResponse(
+          res,
+          StatusCode.UNAUTHORIZED,
+          'Invalid authorization header'
+        );
+  
+      jwtController.verify(token);
+      return next();
+    } catch (error) {
+      let localError = null;
+      if (error instanceof TokenExpiredError)
+        localError = new AuthorizationError(
+          'Token has expired. Please login again'
+        );
+      else if (error instanceof JsonWebTokenError)
+        localError = new AuthorizationError('Invalid token');
+      return next(localError || error);
+    }
   }
 }
 

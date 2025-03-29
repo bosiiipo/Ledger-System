@@ -28,4 +28,23 @@ export class UserController {
       return next(error);
     }
   }
+
+  async getUserById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const params = {
+        userId: req.params.userId
+      }
+
+      const response = await UserService.getUserById(params);
+      
+      return sendSuccessResponse(
+        res,
+        StatusCode.OK,
+        'User fetched successfully',
+        response
+      );
+    } catch (error) {
+      return next(error);
+    }
+  }
 }

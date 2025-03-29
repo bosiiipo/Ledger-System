@@ -1,7 +1,5 @@
 import {NextFunction, Request, Response} from 'express';
-import * as UserSchema from '../validations/user.schema';
 import * as UserService from '../services/user';
-import {validate} from '../middlewares/validate';
 import {
   sendFailureResponse,
   sendSuccessResponse,

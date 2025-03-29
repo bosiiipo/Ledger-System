@@ -10,5 +10,4 @@ router.use('/auth', authRoutes);
 // Requires auth
 router.use('/user', userRoutes);
 
-
 export default router;

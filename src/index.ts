@@ -1,9 +1,10 @@
+import {config} from './config';
+import logger from './lib/logger';
 import app from './server';
 
-const port = 9001;
-
-console.log("STRAT")
-
-app.listen(port, () => {
-  console.log(`Server started on port ${port}`);
+app.listen(config.port, () => {
+  logger.info(
+    {message: `Server started on port ${config.port}`},
+    'SERVER_START'
+  );
 });

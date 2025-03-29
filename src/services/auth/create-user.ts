@@ -1,5 +1,4 @@
 import User from '../../models/User.model';
-import {ValidationError} from '../../responses/errors';
 import bcrypt from "bcryptjs";
 import { jwtController } from '../jwt';
 

@@ -1,7 +1,5 @@
 import {NextFunction, Request, Response} from 'express';
-import * as UserSchema from '../validations/user.schema';
 import * as UserService from '../services/user';
-import {validate} from '../middlewares/validate';
 import {
   sendFailureResponse,
   sendSuccessResponse,
@@ -24,6 +22,25 @@ export class UserController {
         res,
         StatusCode.CREATED,
         'User created successfully',
+        response
+      );
+    } catch (error) {
+      return next(error);
+    }
+  }
+
+  async getUserById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const params = {
+        userId: req.params.userId
+      }
+
+      const response = await UserService.getUserById(params);
+      
+      return sendSuccessResponse(
+        res,
+        StatusCode.OK,
+        'User fetched successfully',
         response
       );
     } catch (error) {

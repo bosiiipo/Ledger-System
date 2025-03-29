@@ -1,5 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
+
+import appRoutes from './routes';
 import {connectMongoose} from './database';
 
 const app = express();
@@ -16,6 +18,8 @@ app.use(
     });
   })
 );
+
+app.use('/v1', appRoutes);
 
 connectMongoose();
 

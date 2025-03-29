@@ -3,6 +3,7 @@ import morgan from 'morgan';
 
 import appRoutes from './routes';
 import {connectMongoose} from './database';
+import {sendFailureResponse, StatusCode} from './responses';
 
 const app = express();
 
@@ -19,8 +20,12 @@ app.use(
   })
 );
 
+connectMongoose();
+
 app.use('/v1', appRoutes);
 
-connectMongoose();
+app.use((req, res) => {
+  return sendFailureResponse(res, StatusCode.NOT_FOUND, 'Route not found');
+});
 
 export default app;

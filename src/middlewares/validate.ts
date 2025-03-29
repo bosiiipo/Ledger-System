@@ -1,20 +1,20 @@
-import * as yup from 'yup';
+import * as yup from "yup";
 import {ValidationError} from '../responses/errors';
+import { Request, Response, NextFunction } from "express";
 
-export const validate = async <T>(
-  schema: yup.ISchema<T>,
-  data: unknown
-): Promise<T> => {
-  try {
-    const result = await schema.validate(data);
-    return result;
-  } catch (error: unknown) {
-    if (error instanceof yup.ValidationError) {
-      throw new ValidationError(
-        'Please check your input and try again',
-        error.errors
-      );
+export const validate =
+  (schema: yup.ObjectSchema<any>) =>
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      await schema.validate(req.body, { abortEarly: false });
+      next(); 
+    } catch (error) {
+      if (error instanceof yup.ValidationError) {
+        return next(new ValidationError(
+          'Please check your input and try again',
+          error.errors
+        ));
+      }
+      next(error);
     }
-    throw error;
-  }
-};
+  };

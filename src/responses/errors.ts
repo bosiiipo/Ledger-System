@@ -55,3 +55,13 @@ export class ResourceNotFound extends AppError {
     this.data = {query};
   }
 }
+
+export class ResourceExists extends AppError {
+  data: Record<string, unknown>;
+
+  constructor(message: string, query?: Record<string, unknown> | string) {
+    super(message, StatusCode.CONFLICT);
+    this.data = {query};
+  }
+}
+

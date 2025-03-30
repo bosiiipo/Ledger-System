@@ -6,12 +6,18 @@ import {
   StatusCode,
 } from '../../responses';
 import Wallet from '../../models/Wallet.model';
-import { ResourceExists, ResourceNotFound, ValidationError } from '../../responses/errors';
+import { UnprocessableEntityException, ResourceNotFound, ValidationError } from '../../responses/errors';
 import User from '../../models/User.model';
 
 type CreateWallet = {
     userId: string;
     currency: string;
+};
+
+type TopUpWallet = {
+  userId: string;
+  walletId: string;
+  amount: number;
 };
 
 class WalletService {
@@ -25,7 +31,7 @@ class WalletService {
     const existingWallet = await Wallet.findOne({ userId, currency });
 
     if (existingWallet){
-        throw new ResourceExists("Account with this currency already exists!");
+        throw new UnprocessableEntityException("Account with this currency already exists!");
     }
 
     const user = await User.findById(userId);
@@ -41,6 +47,26 @@ class WalletService {
     await newWallet.save();
 
     return newWallet;
+  }
+
+  async topUpWallet(input: TopUpWallet) {
+    const { userId, walletId, amount } = input;
+
+    const user = await User.findById(userId);
+
+    if(!user) throw new ResourceNotFound("User with userId provided, not found!")
+
+    const wallet = await Wallet.findOne({ userId, walletId });
+
+    if (!wallet){
+        throw new UnprocessableEntityException("Account with this id does not exist!");
+    }
+
+    const newBalance = await Wallet.findByIdAndUpdate(walletId, {
+      availableBalance: wallet.availableBalance + amount
+    }); 
+
+    return newBalance;
   }
 
   async getWalletById(req: Request, res: Response, next: NextFunction) {

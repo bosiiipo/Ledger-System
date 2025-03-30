@@ -27,6 +27,27 @@ export class WalletController {
     }
   }
 
+  async topUpWallet(req: Request, res: Response, next: NextFunction) {
+    try {
+      const params = {
+        userId: req.params.userId,
+        walletId: req.params.walletId,
+        amount: req.body.amount
+      };
+
+      const response = await walletService.topUpWallet(params);
+      
+      return sendSuccessResponse(
+        res,
+        StatusCode.CREATED,
+        'Wallet topped up successfully',
+        response
+      );
+    } catch (error) {
+      return next(error);
+    }
+  }
+
   async getWalletById(req: Request, res: Response, next: NextFunction) {
     try {
       const params = {

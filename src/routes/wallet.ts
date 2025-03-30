@@ -7,7 +7,9 @@ const walletController = new WalletController();
 const authController = new AuthController();
 
 router.post('/create/:userId', authController.authorizeToken, walletController.createWallet); 
+router.post('/:walletId/user/:userId/', authController.authorizeToken, walletController.topUpWallet); 
 
 export default router;
+
 
 

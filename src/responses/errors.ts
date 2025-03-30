@@ -56,7 +56,7 @@ export class ResourceNotFound extends AppError {
   }
 }
 
-export class ResourceExists extends AppError {
+export class UnprocessableEntityException extends AppError {
   data: Record<string, unknown>;
 
   constructor(message: string, query?: Record<string, unknown> | string) {

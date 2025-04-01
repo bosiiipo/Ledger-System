@@ -71,6 +71,7 @@ export class AuthController {
       else if (error instanceof JsonWebTokenError)
         localError = new AuthorizationError('Invalid token');
       return next(localError || error);
+      // throw localError
     }
   }
 }

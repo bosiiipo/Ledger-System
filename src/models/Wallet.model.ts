@@ -4,13 +4,17 @@ export interface IWallet extends Document {
     userId: mongoose.Types.ObjectId;
     availableBalance: number;
     currency: string;
-    password: string;
+    accountName: string;
 }
 
 const WalletSchema: Schema<IWallet> = new Schema({
     userId: {
         type: Schema.Types.ObjectId,
         ref: "User",
+        required: true
+    },
+    accountName: {
+        type: String,
         required: true
     },
     availableBalance: {

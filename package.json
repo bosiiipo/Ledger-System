@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node --experimental-specifier-resolution=node build/src/index.js",
+    "start": "node build/index.js",
     "test": "jest",
     "dev": "tsx watch src/index.ts",
     "lint": "gts lint",

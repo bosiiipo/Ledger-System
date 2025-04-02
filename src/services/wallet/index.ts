@@ -8,7 +8,7 @@ import {
 import Wallet from '../../models/Wallet.model';
 import { UnprocessableEntityException, ResourceNotFound, ValidationError } from '../../responses/errors';
 import User from '../../models/User.model';
-import { dbTransaction, client } from '../../database';
+import { client } from '../../database';
 import { isNumberObject } from 'util/types';
 import UserTransactionLog from '../../models/UserTransactionLog';
 import mongoose from 'mongoose';
@@ -161,30 +161,15 @@ class WalletService {
     } catch (error) {
       await session.abortTransaction();
       console.error("Transaction Failed", error);
-      console.log({stack: error.stack});
+      // console.log({stack: error.stack});
       throw error;
     } finally {
       session.endSession();
     }
   }
 
-  async getWalletById(req: Request, res: Response, next: NextFunction) {
-    try {
-      const params = {
-        WalletId: req.params.WalletId
-      }
-
-      const response = await WalletService.getWalletById(params);
-      
-      return sendSuccessResponse(
-        res,
-        StatusCode.OK,
-        'Wallet fetched successfully',
-        response
-      );
-    } catch (error) {
-      return next(error);
-    }
+  async getWalletById(input: {walletId: string}) {
+    return await Wallet.findById(input.walletId);
   }
 }
 

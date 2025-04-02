@@ -73,10 +73,10 @@ export class WalletController {
   async getWalletById(req: Request, res: Response, next: NextFunction) {
     try {
       const params = {
-        WalletId: req.params.WalletId
+        walletId: req.params.WalletId
       }
 
-      const response = await WalletService.getWalletById(params);
+      const response = await walletService.getWalletById(params);
       
       return sendSuccessResponse(
         res,

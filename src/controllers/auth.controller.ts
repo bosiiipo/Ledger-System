@@ -2,7 +2,10 @@ import {NextFunction, Request, Response} from 'express';
 import {sendFailureResponse, sendSuccessResponse, StatusCode} from '../responses';
 import { jwtController } from '../services/jwt';
 import * as AuthService from '../services/auth'
-import {JsonWebTokenError, TokenExpiredError} from 'jsonwebtoken';
+// import {JsonWebTokenError, TokenExpiredError} from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
+const { JsonWebTokenError, TokenExpiredError } = jwt;
+
 import { AuthorizationError } from '../responses/errors';
 
 

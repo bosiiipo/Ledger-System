@@ -66,15 +66,7 @@ export class AuthController {
       jwtController.verify(token);
       return next();
     } catch (error) {
-      let localError = null;
-      if (error instanceof TokenExpiredError)
-        localError = new AuthorizationError(
-          'Token has expired. Please login again'
-        );
-      else if (error instanceof JsonWebTokenError)
-        localError = new AuthorizationError('Invalid token');
-      return next(localError || error);
-      // throw localError
+      throw new Error("Token Expired");
     }
   }
 }

@@ -33,6 +33,10 @@ type SendMoney = {
   currency: string;
 };
 
+type GetWallets = {
+  userId: string
+};
+
 class WalletService {
   private client: MongoClient;
 
@@ -168,6 +172,11 @@ class WalletService {
     } finally {
       session.endSession();
     }
+  }
+
+  async getWallets(input: {userId: string}) {
+    console.log(await Wallet.find({userId: input.userId}));
+    return await Wallet.find({userId: input.userId});
   }
 
   async getWalletById(input: {walletId: string}) {

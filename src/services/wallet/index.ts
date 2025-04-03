@@ -96,6 +96,8 @@ class WalletService {
       throw new Error("Currency not supported!");
     }
 
+    if(amount < 0) throw new Error("Negative amounts for transfers are not allowed!");
+
     await this.client.connect();
     const session: ClientSession = await mongoose.startSession();
 

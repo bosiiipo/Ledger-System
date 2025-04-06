@@ -1,7 +1,6 @@
 import {NextFunction, Request, Response} from 'express';
 import {walletService} from '../services/wallet';
 import {
-  sendFailureResponse,
   sendSuccessResponse,
   StatusCode,
 } from '../responses';
@@ -15,7 +14,7 @@ export class WalletController {
       };
 
       const response = await walletService.createWallet(params);
-      
+
       return sendSuccessResponse(
         res,
         StatusCode.CREATED,
@@ -32,14 +31,14 @@ export class WalletController {
       const params = {
         userId: req.params.userId,
         walletId: req.params.walletId,
-        amount: req.body.amount
+        amount: req.body.amount,
       };
 
       const response = await walletService.topUpWallet(params);
-      
+
       return sendSuccessResponse(
         res,
-        StatusCode.CREATED,
+        StatusCode.OK,
         'Wallet topped up successfully',
         response
       );
@@ -55,7 +54,7 @@ export class WalletController {
       };
 
       const response = await walletService.getWallets(params);
-      
+
       return sendSuccessResponse(
         res,
         StatusCode.OK,
@@ -74,11 +73,11 @@ export class WalletController {
         senderWalletId: req.body.senderWalletId,
         recipientWalletId: req.body.recipientWalletId,
         currency: req.body.currency,
-        amount: req.body.amount
+        amount: req.body.amount,
       };
 
       const response = await walletService.sendMoney(params);
-      
+
       return sendSuccessResponse(
         res,
         StatusCode.CREATED,
@@ -93,11 +92,11 @@ export class WalletController {
   async getWalletById(req: Request, res: Response, next: NextFunction) {
     try {
       const params = {
-        walletId: req.params.WalletId
-      }
+        walletId: req.params.WalletId,
+      };
 
       const response = await walletService.getWalletById(params);
-      
+
       return sendSuccessResponse(
         res,
         StatusCode.OK,

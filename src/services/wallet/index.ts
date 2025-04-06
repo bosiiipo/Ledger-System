@@ -8,7 +8,7 @@ import {
 import Wallet from '../../models/Wallet.model';
 import { UnprocessableEntityException, ResourceNotFound, ValidationError } from '../../responses/errors';
 import User from '../../models/User.model';
-import { dbTransaction, client } from '../../database';
+import { client } from '../../database';
 import { isNumberObject } from 'util/types';
 import UserTransactionLog from '../../models/UserTransactionLog';
 import mongoose from 'mongoose';
@@ -31,6 +31,10 @@ type SendMoney = {
   recipientWalletId: string;
   amount: number;
   currency: string;
+};
+
+type GetWallets = {
+  userId: string
 };
 
 class WalletService {
@@ -95,6 +99,8 @@ class WalletService {
     if (!["NGN", "GBP", "EUR", "USD"].includes(currency)) {
       throw new Error("Currency not supported!");
     }
+
+    if(amount < 0) throw new Error("Negative amounts for transfers are not allowed!");
 
     await this.client.connect();
     const session: ClientSession = await mongoose.startSession();
@@ -161,30 +167,20 @@ class WalletService {
     } catch (error) {
       await session.abortTransaction();
       console.error("Transaction Failed", error);
-      console.log({stack: error.stack});
+      // console.log({stack: error.stack});
       throw error;
     } finally {
       session.endSession();
     }
   }
 
-  async getWalletById(req: Request, res: Response, next: NextFunction) {
-    try {
-      const params = {
-        WalletId: req.params.WalletId
-      }
+  async getWallets(input: {userId: string}) {
+    console.log(await Wallet.find({userId: input.userId}));
+    return await Wallet.find({userId: input.userId});
+  }
 
-      const response = await WalletService.getWalletById(params);
-      
-      return sendSuccessResponse(
-        res,
-        StatusCode.OK,
-        'Wallet fetched successfully',
-        response
-      );
-    } catch (error) {
-      return next(error);
-    }
+  async getWalletById(input: {walletId: string}) {
+    return await Wallet.findById(input.walletId);
   }
 }
 

@@ -47,6 +47,26 @@ export class WalletController {
       return next(error);
     }
   }
+
+  async getWallets(req: Request, res: Response, next: NextFunction) {
+    try {
+      const params = {
+        userId: req.params.userId,
+      };
+
+      const response = await walletService.getWallets(params);
+      
+      return sendSuccessResponse(
+        res,
+        StatusCode.OK,
+        'Wallets fetched successfully',
+        response
+      );
+    } catch (error) {
+      return next(error);
+    }
+  }
+
   async sendMoney(req: Request, res: Response, next: NextFunction) {
     try {
       const params = {
@@ -73,10 +93,10 @@ export class WalletController {
   async getWalletById(req: Request, res: Response, next: NextFunction) {
     try {
       const params = {
-        WalletId: req.params.WalletId
+        walletId: req.params.WalletId
       }
 
-      const response = await WalletService.getWalletById(params);
+      const response = await walletService.getWalletById(params);
       
       return sendSuccessResponse(
         res,

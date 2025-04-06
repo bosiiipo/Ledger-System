@@ -2,7 +2,10 @@ import {NextFunction, Request, Response} from 'express';
 import {sendFailureResponse, sendSuccessResponse, StatusCode} from '../responses';
 import { jwtController } from '../services/jwt';
 import * as AuthService from '../services/auth'
-import {JsonWebTokenError, TokenExpiredError} from 'jsonwebtoken';
+// import {JsonWebTokenError, TokenExpiredError} from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
+const { JsonWebTokenError, TokenExpiredError } = jwt;
+
 import { AuthorizationError } from '../responses/errors';
 
 
@@ -63,15 +66,7 @@ export class AuthController {
       jwtController.verify(token);
       return next();
     } catch (error) {
-      let localError = null;
-      if (error instanceof TokenExpiredError)
-        localError = new AuthorizationError(
-          'Token has expired. Please login again'
-        );
-      else if (error instanceof JsonWebTokenError)
-        localError = new AuthorizationError('Invalid token');
-      return next(localError || error);
-      // throw localError
+      throw new Error("Token Expired");
     }
   }
 }

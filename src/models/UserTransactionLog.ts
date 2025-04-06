@@ -55,11 +55,11 @@ const UserTransactionLogSchema: Schema<IUserTransactionLog> = new Schema({
         unique: true
     },
     walletId: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Wallet",
     },
     recipientWalletId: {
-        type: mongoose.Types.ObjectId,
+        type: Schema.Types.ObjectId,
         ref: "Wallet"
     }
 },

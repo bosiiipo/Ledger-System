@@ -1,11 +1,14 @@
 import mongoose, { ClientSession, Connection } from 'mongoose';
 import {MongoClient} from 'mongodb';
-import { InternalError, UnprocessableEntityException } from '../responses/errors';
 import {config} from '../config';
+import { MongoMemoryServer } from 'mongodb-memory-server';
 
 export const connectMongoose = async () => {
   try {
-    await mongoose.connect(config.databaseUrl!);
+    let mongoMockServer = await MongoMemoryServer.create();
+    const uri = mongoMockServer.getUri();
+    let databaseURL = process.env.NODE_ENV !== "test" ? config.databaseUrl! : uri; 
+    await mongoose.connect(databaseURL);
     console.log('mongoose.js: ' + 'Successfully connected to mongo database!!');
   } catch (error) {
     console.log(error);

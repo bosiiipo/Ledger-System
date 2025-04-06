@@ -1,23 +1,26 @@
 import {NextFunction, Request, Response} from 'express';
-import {sendFailureResponse, sendSuccessResponse, StatusCode} from '../responses';
-import { jwtController } from '../services/jwt';
-import * as AuthService from '../services/auth'
+import {
+  sendFailureResponse,
+  sendSuccessResponse,
+  StatusCode,
+} from '../responses';
+import {jwtController} from '../services/jwt';
+import * as AuthService from '../services/auth';
 // import {JsonWebTokenError, TokenExpiredError} from 'jsonwebtoken';
-import jwt from "jsonwebtoken";
-const { JsonWebTokenError, TokenExpiredError } = jwt;
+import jwt from 'jsonwebtoken';
+const {JsonWebTokenError, TokenExpiredError} = jwt;
 
-import { AuthorizationError } from '../responses/errors';
-
+import {AuthorizationError} from '../responses/errors';
 
 export class AuthController {
-  async signIn (req: Request, res: Response) {
+  async signIn(req: Request, res: Response) {
     const params = {
       email: req.body.email,
       password: req.body.password,
     };
 
     const response = await AuthService.signInUser(params);
-          
+
     return sendSuccessResponse(
       res,
       StatusCode.OK,
@@ -26,7 +29,7 @@ export class AuthController {
     );
   }
 
-  async createUser (req: Request, res: Response) {
+  async createUser(req: Request, res: Response) {
     const params = {
       firstName: req.body.firstName,
       lastName: req.body.lastName,
@@ -35,7 +38,7 @@ export class AuthController {
     };
 
     const response = await AuthService.createUser(params);
-          
+
     return sendSuccessResponse(
       res,
       StatusCode.CREATED,
@@ -47,14 +50,14 @@ export class AuthController {
   async authorizeToken(req: Request, res: Response, next: NextFunction) {
     try {
       const authHeader = req.headers.authorization;
-  
+
       if (!authHeader)
         return sendFailureResponse(
           res,
           StatusCode.UNAUTHORIZED,
           'Authorization header not found'
         );
-  
+
       const [bearer, token] = authHeader.split(' ');
       if (!(bearer?.toLowerCase() === 'bearer' && token))
         return sendFailureResponse(
@@ -62,11 +65,11 @@ export class AuthController {
           StatusCode.UNAUTHORIZED,
           'Invalid authorization header'
         );
-  
+
       jwtController.verify(token);
       return next();
     } catch (error) {
-      throw new Error("Token Expired");
+      throw new Error('Token Expired');
     }
   }
 }

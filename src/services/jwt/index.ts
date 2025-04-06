@@ -3,15 +3,11 @@ import {config} from '../../config';
 
 type JwtData = {
   userId: string;
-}
+};
 
 class JwtController {
   async sign(data: JwtData) {
-    return await jwt.sign(
-        data,
-        config.secret as string,
-        { expiresIn: 3600 }
-    );
+    return await jwt.sign(data, config.secret as string, {expiresIn: 3600});
   }
 
   async verify(jwtToken: string) {

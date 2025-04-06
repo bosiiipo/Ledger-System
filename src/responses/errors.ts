@@ -64,4 +64,3 @@ export class UnprocessableEntityException extends AppError {
     this.data = {query};
   }
 }
-

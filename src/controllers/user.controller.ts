@@ -1,7 +1,6 @@
 import {NextFunction, Request, Response} from 'express';
 import * as UserService from '../services/user';
 import {
-  sendFailureResponse,
   sendSuccessResponse,
   StatusCode,
 } from '../responses';
@@ -17,7 +16,7 @@ export class UserController {
       };
 
       const response = await UserService.createUser(params);
-      
+
       return sendSuccessResponse(
         res,
         StatusCode.CREATED,
@@ -32,11 +31,11 @@ export class UserController {
   async getUserById(req: Request, res: Response, next: NextFunction) {
     try {
       const params = {
-        userId: req.params.userId
-      }
+        userId: req.params.userId,
+      };
 
       const response = await UserService.getUserById(params);
-      
+
       return sendSuccessResponse(
         res,
         StatusCode.OK,

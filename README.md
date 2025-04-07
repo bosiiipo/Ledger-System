@@ -71,7 +71,7 @@ docker-compose up --build
 ## 📖 API Documentation
 API documentation is available using Postman collections:
 
-]
+
 https://universal-astronaut-73296.postman.co/workspace/Team-Workspace~351a2681-ee46-4bed-8368-aac884e2f7b5/collection/43581026-36e59e34-7b6d-4026-8b3d-7b2dfe602506?action=share&creator=43581026
 
 ---

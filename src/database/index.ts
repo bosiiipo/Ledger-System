@@ -1,18 +1,23 @@
 import mongoose from 'mongoose';
-import {MongoClient} from 'mongodb';
-import {config} from '../config';
-import {MongoMemoryReplSet} from 'mongodb-memory-server';
+import { MongoClient } from 'mongodb';
+import { config } from '../config';
+import { MongoMemoryReplSet } from 'mongodb-memory-server';
+
+let mongoMockServer: MongoMemoryReplSet | null = null;
 
 export const connectMongoose = async () => {
   try {
-    const mongoMockServer = await MongoMemoryReplSet.create({replSet: { count: 1 }});
-    const uri = mongoMockServer.getUri();
-    const databaseURL =
-      process.env.NODE_ENV !== 'test' ? config.databaseUrl! : uri;
+    let databaseURL = config.databaseUrl!;
+
+    if (process.env.NODE_ENV === 'test') {
+      mongoMockServer = await MongoMemoryReplSet.create({ replSet: { count: 1 } });
+      databaseURL = mongoMockServer.getUri();
+    }
+
     await mongoose.connect(databaseURL);
-    console.log('mongoose.js: ' + 'Successfully connected to mongo database!!');
+    console.log('mongoose.js: Successfully connected to MongoDB!');
   } catch (error) {
-    console.log(error);
+    console.error('mongoose.js: Connection error:', error);
   }
 };
 

@@ -1,6 +1,9 @@
-# Mainstack Backend
+## Banking Transactions API (Ledger System)
 
-Mainstack is a backend service that provides authentication and wallet management functionalities. Built with TypeScript, Node.js, Express and MongoDB it follows a modular architecture with clean code separation.
+### Overview
+
+Build a banking ledger system that handles financial transactions with ACID compliance and double-entry accounting using MongoDB transactions.
+
 
 ## 🚀 Features
 - User authentication (Signup, Login, JWT Authentication)

@@ -118,8 +118,6 @@ describe('POST /wallets', () => {
             amount: 1000000
         });
 
-    console.log({toppedUpWalletResponse: newWallet.body.data._id});
-
     expect(toppedUpWalletResponse.statusCode).toBe(200);
 
     expect(toppedUpWalletResponse.body.data).toEqual(
@@ -131,5 +129,63 @@ describe('POST /wallets', () => {
             currency: expect.any(String),
         })
     );
+  });
+
+  test("Send money from one wallet to another", async () => {
+    const fakeUserOne = [{
+      firstName: faker.person.firstName(),
+      lastName: faker.person.lastName(),
+      email: faker.internet.email(),
+      password: faker.internet.password(),
+    }];
+
+    const fakeUserTwo = [{
+        firstName: faker.person.firstName(),
+        lastName: faker.person.lastName(),
+        email: faker.internet.email(),
+        password: faker.internet.password(),
+    }];
+
+    const newUsers = await Promise.all(
+        [...fakeUserOne, ...fakeUserTwo].map((user) => 
+            request(app)
+            .post('/v1/auth/register')
+            .send(user))
+    );
+
+    const newWallets = await Promise.all(
+        newUsers.map((us) => 
+            request(app)
+            .post(`/v1/wallet/create/${us.body.data.user._id}`)
+            .set('Authorization', `Bearer ${us.body.data.jwtToken}`)
+            .send({currency: "GBP", userId: us.body.data.user._id})
+        )
+    );
+
+    let sendingWallet = newWallets[0].body.data;
+    let sendingWalletAuthToken = newUsers.find((el) => el.body.data.user._id === sendingWallet.userId)?.body.data.jwtToken;
+    let receivingWallet = newWallets[1].body.data;
+
+    const topUpOneWalletForTransfer = await request(app)
+        .post(`/v1/wallet/${sendingWallet._id}/user/${sendingWallet.userId}`)
+        .set('Authorization', `Bearer ${sendingWalletAuthToken}`)
+        .send({
+            userId: sendingWallet.userId,
+            walletId: sendingWallet._id,
+            amount: 1000000
+        });
+
+    const sendMoney =   await request(app)
+        .post(`/v1/wallet/send`)
+        .set('Authorization', `Bearer ${sendingWalletAuthToken}`)
+        .send({
+            userId: sendingWallet.userId,
+            senderWalletId: sendingWallet._id,
+            recipientWalletId: receivingWallet._id,
+            currency: sendingWallet.currency,
+            amount: 500000,
+        })
+
+    expect(sendMoney.statusCode).toBe(201);
   });
 });

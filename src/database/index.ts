@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
 import {MongoClient} from 'mongodb';
 import {config} from '../config';
-import {MongoMemoryServer} from 'mongodb-memory-server';
+import {MongoMemoryReplSet} from 'mongodb-memory-server';
 
 export const connectMongoose = async () => {
   try {
-    const mongoMockServer = await MongoMemoryServer.create();
+    const mongoMockServer = await MongoMemoryReplSet.create({replSet: { count: 1 }});
     const uri = mongoMockServer.getUri();
     const databaseURL =
       process.env.NODE_ENV !== 'test' ? config.databaseUrl! : uri;

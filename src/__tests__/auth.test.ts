@@ -16,7 +16,6 @@ describe('POST /auth', () => {
       .post('/v1/auth/register')
       .send(fakeUser);
     expect(response.statusCode).toBe(201);
-    console.log({response: response.body.data.user._id});
     expect(response.body).toEqual({
       status: 'success',
       message: 'User created successfully',

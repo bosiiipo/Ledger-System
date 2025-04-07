@@ -18,7 +18,7 @@ mainstack/
 │   ├── models/             # Database models & Prisma client
 │   ├── routes/             # Express route definitions
 │   ├── services/           # Business logic & service layer
-│   ├── tests/              # Unit & integration tests
+│   ├── __tests__/          # Unit & integration tests
 │   ├── index.ts            # Entry point for the backend server
 │   ├── server.ts           # Entry point for the backend server
 │   ├── config.ts           # Env configuration
@@ -47,21 +47,13 @@ npm install
 ### 3️⃣ Set up environment variables
 Create a `.env` file from `.env.example` and configure your database & JWT settings:
 ```env
-DATABASE_URL=postgresql://user:password@localhost:5432/mainstack
-JWT_SECRET=your_secret_key
+DATABASE_URL=database_url
+PORT=9001
+SECRET=your_jwt_secret
+NODE_ENV=development
 ```
 
-### 4️⃣ Apply database migrations
-```sh
-npx prisma migrate dev
-```
-
-### 5️⃣ Generate Prisma Client
-```sh
-npx prisma generate
-```
-
-### 6️⃣ Start the development server
+### 4️⃣ Start the development server
 ```sh
 npm run dev
 ```
@@ -77,15 +69,7 @@ docker-compose up --build
 ```
 
 ## 📖 API Documentation
-API documentation is available using Swagger (if implemented) or Postman collections.
-
-## 🤝 Contributing
-1. Fork the repo & create a new branch.
-2. Make your changes & commit.
-3. Push to your fork & submit a PR.
+API documentation is available using Postman collections:
+https://universal-astronaut-73296.postman.co/workspace/Team-Workspace~351a2681-ee46-4bed-8368-aac884e2f7b5/collection/43581026-36e59e34-7b6d-4026-8b3d-7b2dfe602506?action=share&creator=43581026
 
 ---
-
-### 🔗 Connect
-For any issues, feel free to create an issue in this repository or reach out.
-

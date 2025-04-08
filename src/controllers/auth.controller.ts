@@ -4,12 +4,9 @@ import {
   sendSuccessResponse,
   StatusCode,
 } from '../responses';
-import {jwtController} from '../services/jwt';
-import * as AuthService from '../services/auth';
-// import {JsonWebTokenError, TokenExpiredError} from 'jsonwebtoken';
+import {jwtController} from './jwt.controller';
+import {authService} from '../services/auth';
 import jwt from 'jsonwebtoken';
-const {JsonWebTokenError, TokenExpiredError} = jwt;
-
 import {AuthorizationError} from '../responses/errors';
 
 export class AuthController {
@@ -19,7 +16,7 @@ export class AuthController {
       password: req.body.password,
     };
 
-    const response = await AuthService.signInUser(params);
+    const response = await authService.signInUser(params);
 
     return sendSuccessResponse(
       res,
@@ -37,7 +34,7 @@ export class AuthController {
       password: req.body.password,
     };
 
-    const response = await AuthService.createUser(params);
+    const response = await authService.createUser(params);
 
     return sendSuccessResponse(
       res,
@@ -66,7 +63,8 @@ export class AuthController {
           'Invalid authorization header'
         );
 
-      jwtController.verify(token);
+      const decoded = await jwtController.verify(token);
+      (req as any).user = decoded;
       return next();
     } catch (error) {
       throw new Error('Token Expired');

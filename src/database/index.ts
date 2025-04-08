@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import { MongoClient } from 'mongodb';
 import { config } from '../config';
 import { MongoMemoryReplSet } from 'mongodb-memory-server';
+import logger from '../lib/logger';
 
 let mongoMockServer: MongoMemoryReplSet | null = null;
 
@@ -15,9 +16,9 @@ export const connectMongoose = async () => {
     }
 
     await mongoose.connect(databaseURL);
-    console.log('mongoose.js: Successfully connected to MongoDB!');
+    logger.info('mongoose.js: Successfully connected to MongoDB!');
   } catch (error) {
-    console.error('mongoose.js: Connection error:', error);
+    logger.error('mongoose.js: Connection error:', error);
   }
 };
 

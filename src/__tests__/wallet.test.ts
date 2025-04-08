@@ -26,8 +26,6 @@ describe('POST /wallets', () => {
       .set('Authorization', `Bearer ${response.body.data.jwtToken}`)
       .send(fakeWallet);
 
-    //   console.log({walletResponse: walletResponse.body.data})
-
     expect(walletResponse.statusCode).toBe(201);
     expect(walletResponse.body).toEqual({
         status: 'success',

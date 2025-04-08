@@ -9,6 +9,7 @@ import {client} from '../../database';
 import UserTransactionLog from '../../models/UserTransactionLog';
 import mongoose from 'mongoose';
 import {ClientSession, MongoClient} from 'mongodb';
+import logger from '../../lib/logger';
 
 type CreateWallet = {
   userId: string;
@@ -175,11 +176,10 @@ class WalletService {
       await recipientTransactionReceipt.save({session});
 
       await session.commitTransaction();
-      console.log('Transaction Successful');
+      logger.info("Transaaction Successful");
     } catch (error) {
       await session.abortTransaction();
-      console.error('Transaction Failed', error);
-      // console.log({stack: error.stack});
+      logger.info("Transaaction Failed", error);
       throw error;
     } finally {
       session.endSession();
@@ -187,7 +187,6 @@ class WalletService {
   }
 
   async getWallets(input: {userId: string}) {
-    // console.log(await Wallet.find({userId: input.userId}));
     return await Wallet.find({userId: input.userId});
   }
 

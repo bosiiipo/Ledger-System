@@ -14,7 +14,7 @@ Build a banking ledger system that handles financial transactions with ACID comp
 
 ## 🏗️ Project Structure
 ```
-mainstack/
+ledger-system/
 │── src/
 │   ├── controllers/        # Request handlers
 │   ├── middlewares/         # Authentication & error-handling middleware
@@ -38,8 +38,8 @@ mainstack/
 ## 🔧 Setup & Installation
 ### 1️⃣ Clone the repository
 ```sh
-git clone https://github.com/bosiiipo/mainstack.git
-cd mainstack
+git clone https://github.com/bosiiipo/ledger-system.git
+cd ledger-system
 ```
 
 ### 2️⃣ Install dependencies

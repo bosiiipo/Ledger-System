@@ -1,9 +1,6 @@
 import {NextFunction, Request, Response} from 'express';
 import {walletService} from '../services/wallet';
-import {
-  sendSuccessResponse,
-  StatusCode,
-} from '../responses';
+import {sendSuccessResponse, StatusCode} from '../responses';
 
 export class WalletController {
   async createWallet(req: Request, res: Response, next: NextFunction) {

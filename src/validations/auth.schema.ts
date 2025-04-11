@@ -17,5 +17,3 @@ export const SignInSchema = yup.object({
     .required('Email is required'),
   password: yup.string().required(),
 });
-
-

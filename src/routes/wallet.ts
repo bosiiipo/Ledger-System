@@ -1,8 +1,12 @@
 import {Router} from 'express';
 import {WalletController} from '../controllers/wallet.controller';
 import AuthController from '../controllers/auth.controller';
-import { CreateWalletSchema, SendMoneySchema, TopUpWalletSchema } from '../validations/wallet.schema';
-import { validate } from '../middlewares/validate';
+import {
+  CreateWalletSchema,
+  SendMoneySchema,
+  TopUpWalletSchema,
+} from '../validations/wallet.schema';
+import {validate} from '../middlewares/validate';
 
 export const router = Router();
 const walletController = new WalletController();
@@ -26,7 +30,7 @@ router.post(
   walletController.topUpWallet
 );
 router.post(
-  '/send', 
+  '/send',
   authController.authorizeToken,
   validate(SendMoneySchema),
   walletController.sendMoney

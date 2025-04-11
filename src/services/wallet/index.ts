@@ -176,10 +176,10 @@ class WalletService {
       await recipientTransactionReceipt.save({session});
 
       await session.commitTransaction();
-      logger.info("Transaaction Successful");
+      logger.info('Transaaction Successful');
     } catch (error) {
       await session.abortTransaction();
-      logger.info("Transaaction Failed", error);
+      logger.info('Transaaction Failed', error);
       throw error;
     } finally {
       session.endSession();
@@ -196,5 +196,3 @@ class WalletService {
 }
 
 export const walletService = new WalletService(client);
-
-

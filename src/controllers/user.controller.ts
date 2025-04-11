@@ -1,9 +1,6 @@
 import {NextFunction, Request, Response} from 'express';
 import {userService} from '../services/user';
-import {
-  sendSuccessResponse,
-  StatusCode,
-} from '../responses';
+import {sendSuccessResponse, StatusCode} from '../responses';
 
 export class UserController {
   async getUserById(req: Request, res: Response, next: NextFunction) {
